@@ -1,18 +1,10 @@
-import clientPromise from '../../../lib/mongodb';
-import { ObjectId } from 'mongodb';
+import getMovie from '../../../lib/getMovie';
 
 export default async (req, res) => {
   const { pid: movieId } = req.query;
 
-  const client = await clientPromise;
-  const db = client.db();
+  const movie = await getMovie(movieId);
 
-  try {
-    const movie = await db
-      .collection('movies')
-      .findOne({ _id: ObjectId(movieId) });
-    res.json(movie);
-  } catch {
-    res.status(400).json();
-  }
+  if (movie) res.json(movie);
+  else res.status(400).json();
 };
