@@ -1,34 +1,26 @@
+import getTopMovies from '../lib/getTopMovies';
 import Head from 'next/head';
-import clientPromise from '../lib/mongodb';
+import Movie from '../components/Movie';
 
-export default function Home({ isConnected }) {
+export default function Home({ movies }) {
   return (
-    <div className="container">
+    <div>
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Movie Page</title>
       </Head>
+      <h1>Top 20 Movies</h1>
+      <h2>By IMDB Rating</h2>
 
-      <main>
-        {isConnected ? (
-          <h2 className="subtitle">You are connected to MongoDB</h2>
-        ) : (
-          <h2 className="subtitle">
-            You are NOT connected to MongoDB. Check the <code>README.md</code>{' '}
-            for instructions.
-          </h2>
-        )}
-      </main>
+      {movies.map((movie) => (
+        <Movie movie={movie} key={movie._id} />
+      ))}
     </div>
   );
 }
 
 export async function getServerSideProps(context) {
-  const client = await clientPromise;
-
-  const isConnected = await client.isConnected();
-
+  const movies = await getTopMovies();
   return {
-    props: { isConnected },
+    props: { movies: JSON.parse(JSON.stringify(movies)) },
   };
 }

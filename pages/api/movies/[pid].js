@@ -11,7 +11,7 @@ export default async (req, res) => {
     const movie = await db
       .collection('movies')
       .findOne({ _id: ObjectId(movieId) });
-    res.status(200).json(movie);
+    res.json(movie);
   } catch {
     res.status(400).json();
   }
