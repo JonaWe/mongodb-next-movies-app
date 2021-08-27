@@ -33,7 +33,7 @@ export default function Home({ movies }) {
       <Head>
         <title>Movie Page</title>
       </Head>
-      <h1>Top 20 Movies</h1>
+      <h1>Top 100 Movies</h1>
       <p>By IMDB Rating</p>
 
       <MovieGrid>
@@ -45,7 +45,7 @@ export default function Home({ movies }) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
   const movies = await getTopMovies();
   return {
     props: { movies: JSON.parse(JSON.stringify(movies)) },
